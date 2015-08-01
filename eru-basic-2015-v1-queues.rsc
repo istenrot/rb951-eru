@@ -18,7 +18,8 @@
   add action=mark-connection chain=prerouting new-connection-mark=critical passthrough=no protocol=icmp
   add action=mark-connection chain=prerouting connection-state=new dst-port=53 new-connection-mark=critical passthrough=no protocol=udp
   add action=mark-connection chain=prerouting connection-state=new new-connection-mark=udp passthrough=no protocol=udp
-  add action=mark-connection chain=prerouting connection-bytes=2097152-0 connection-mark=!long connection-state=established new-connection-mark=long passthrough=no protocol=tcp
+  # Downgrade web connections to long class after 2 MB of traffic
+  add action=mark-connection chain=prerouting connection-bytes=2097152-0 connection-mark=web connection-state=established new-connection-mark=long passthrough=no protocol=tcp
   add action=mark-connection chain=prerouting connection-state=new dst-port=80 new-connection-mark=web passthrough=no protocol=tcp
   add action=mark-connection chain=prerouting connection-state=new dst-port=443 new-connection-mark=web passthrough=no protocol=tcp
   add action=mark-connection chain=prerouting connection-state=new dst-port=22 new-connection-mark=critical passthrough=no protocol=tcp
